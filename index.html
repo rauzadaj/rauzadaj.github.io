@@ -1,0 +1,890 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Jonathan Rauzada — Backend Engineer. J'accélère des produits en fiabilisant APIs, traitements async et performance backend." />
+  <meta name="theme-color" content="#0b0d12" />
+
+  <meta property="og:title" content="Jonathan Rauzada — Backend Engineer" />
+  <meta property="og:description" content="Backend qui tient la charge, optimise les coûts et accélère la livraison produit." />
+  <meta property="og:type" content="website" />
+
+  <title>Jonathan Rauzada — Backend Engineer</title>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+    :root {
+      --bg: #0b0d12;
+      --bg-soft: #121722;
+      --panel: rgba(255, 255, 255, 0.05);
+      --panel-strong: rgba(255, 255, 255, 0.09);
+      --line: rgba(255, 255, 255, 0.16);
+      --text: #f2f5f9;
+      --muted: rgba(242, 245, 249, 0.75);
+      --faint: rgba(242, 245, 249, 0.56);
+      --cyan: #58d2ff;
+      --amber: #ffbb55;
+      --coral: #ff6f61;
+      --green: #88ffb8;
+      --radius: 20px;
+      --radius-lg: 28px;
+      --max: 1180px;
+      --sans: "Space Grotesk", "Avenir Next", "Segoe UI", sans-serif;
+      --mono: "IBM Plex Mono", "Consolas", monospace;
+      --shadow: 0 26px 54px rgba(0, 0, 0, 0.38);
+    }
+
+    [data-theme="light"] {
+      --bg: #f5f1e8;
+      --bg-soft: #fdf9f0;
+      --panel: rgba(18, 23, 34, 0.05);
+      --panel-strong: rgba(18, 23, 34, 0.08);
+      --line: rgba(18, 23, 34, 0.18);
+      --text: #121722;
+      --muted: rgba(18, 23, 34, 0.75);
+      --faint: rgba(18, 23, 34, 0.58);
+      --cyan: #147ea4;
+      --amber: #b56a05;
+      --coral: #b6372f;
+      --green: #097a4b;
+      --shadow: 0 22px 40px rgba(39, 31, 17, 0.16);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--sans);
+      color: var(--text);
+      background:
+        radial-gradient(860px 560px at 4% 8%, rgba(88, 210, 255, 0.2), transparent 62%),
+        radial-gradient(760px 460px at 95% 20%, rgba(255, 187, 85, 0.18), transparent 60%),
+        radial-gradient(740px 440px at 45% 92%, rgba(255, 111, 97, 0.16), transparent 64%),
+        linear-gradient(160deg, var(--bg), var(--bg-soft));
+      line-height: 1.6;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: -1;
+      opacity: 0.25;
+      background-image: linear-gradient(transparent 96%, rgba(255,255,255,0.3) 97%), linear-gradient(90deg, transparent 96%, rgba(255,255,255,0.3) 97%);
+      background-size: 28px 28px;
+      mix-blend-mode: soft-light;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      border-bottom: 1px solid var(--line);
+      background: color-mix(in srgb, var(--bg) 86%, transparent);
+      backdrop-filter: blur(12px);
+    }
+
+    .nav {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 12px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 220px;
+    }
+
+    .sigil {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background:
+        linear-gradient(135deg, rgba(88,210,255,0.24), rgba(255,111,97,0.1)),
+        var(--panel);
+      display: grid;
+      place-items: center;
+      font-family: var(--mono);
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      color: var(--text);
+      box-shadow: var(--shadow);
+    }
+
+    .brand strong {
+      display: block;
+      font-size: 15px;
+      letter-spacing: 0.01em;
+    }
+
+    .brand span {
+      display: block;
+      font-size: 11px;
+      color: var(--faint);
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+    }
+
+    .menu {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .menu a {
+      padding: 8px 10px;
+      border-radius: 12px;
+      font-size: 12px;
+      color: var(--muted);
+      border: 1px solid transparent;
+    }
+
+    .menu a:hover {
+      border-color: var(--line);
+      background: var(--panel);
+      color: var(--text);
+    }
+
+    .btn {
+      border: 1px solid var(--line);
+      background: var(--panel);
+      color: var(--text);
+      border-radius: 14px;
+      padding: 9px 12px;
+      font-size: 12px;
+      font-family: var(--mono);
+      cursor: pointer;
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      background: var(--panel-strong);
+    }
+
+    .btn.primary {
+      border-color: color-mix(in srgb, var(--cyan) 40%, var(--line));
+      background: linear-gradient(125deg, rgba(88,210,255,0.18), rgba(255,187,85,0.16));
+    }
+
+    main {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 26px 18px 84px;
+      position: relative;
+    }
+
+    .hero {
+      margin-top: 10px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      background: linear-gradient(145deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+      box-shadow: var(--shadow);
+      padding: 30px;
+      position: relative;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+      gap: 22px;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: -2px;
+      pointer-events: none;
+      background:
+        radial-gradient(460px 240px at 14% 8%, rgba(88,210,255,0.18), transparent 62%),
+        radial-gradient(480px 280px at 86% 20%, rgba(255,187,85,0.16), transparent 64%),
+        radial-gradient(400px 240px at 50% 100%, rgba(255,111,97,0.14), transparent 62%);
+      opacity: 0.9;
+    }
+
+    .hero > * { position: relative; z-index: 1; }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid var(--line);
+      background: var(--panel);
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: 12px;
+      font-family: var(--mono);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 0 6px rgba(136,255,184,0.14);
+      animation: pulse 2.4s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.35); }
+    }
+
+    h1 {
+      margin: 16px 0 10px;
+      font-size: clamp(34px, 5vw, 62px);
+      line-height: 0.98;
+      letter-spacing: -0.03em;
+      text-wrap: balance;
+    }
+
+    h1 .accent { color: var(--cyan); }
+    h1 .accent2 { color: var(--amber); }
+
+    .lead {
+      margin: 0;
+      max-width: 56ch;
+      color: var(--muted);
+      font-size: clamp(15px, 2vw, 18px);
+    }
+
+    .cta-row {
+      margin-top: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .signal-grid {
+      display: grid;
+      gap: 10px;
+      align-content: start;
+    }
+
+    .signal {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: color-mix(in srgb, var(--panel) 86%, transparent);
+      padding: 14px;
+    }
+
+    .signal b {
+      display: block;
+      font-size: 28px;
+      line-height: 1;
+      margin-bottom: 4px;
+      letter-spacing: -0.03em;
+    }
+
+    .signal span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .signal em {
+      display: inline-block;
+      margin-top: 7px;
+      font-style: normal;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--faint);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .section {
+      margin-top: 20px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      background: color-mix(in srgb, var(--bg-soft) 82%, transparent);
+      padding: 24px;
+      box-shadow: var(--shadow);
+    }
+
+    .section h2 {
+      margin: 0;
+      font-size: clamp(24px, 3vw, 34px);
+      letter-spacing: -0.03em;
+    }
+
+    .section-intro {
+      margin-top: 8px;
+      color: var(--muted);
+      max-width: 68ch;
+    }
+
+    .highlight {
+      margin-top: 16px;
+      border: 1px dashed var(--line);
+      border-radius: 18px;
+      padding: 14px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .highlight div {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 12px;
+      background: var(--panel);
+    }
+
+    .highlight strong {
+      display: block;
+      font-size: 13px;
+      margin-bottom: 4px;
+    }
+
+    .highlight p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .impact-grid,
+    .stack-grid,
+    .contact-grid {
+      margin-top: 16px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .impact-card,
+    .stack-card,
+    .contact-card {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: var(--panel);
+      padding: 15px;
+    }
+
+    .impact-card h3,
+    .stack-card h3,
+    .contact-card h3 {
+      margin: 0;
+      font-size: 14px;
+      letter-spacing: 0.01em;
+    }
+
+    .impact-card p,
+    .stack-card p,
+    .contact-card p {
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .impact-value {
+      margin-top: 10px;
+      display: inline-flex;
+      border-radius: 999px;
+      border: 1px solid color-mix(in srgb, var(--green) 50%, var(--line));
+      background: color-mix(in srgb, var(--green) 16%, var(--panel));
+      padding: 6px 10px;
+      font-family: var(--mono);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .timeline {
+      margin-top: 16px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .job {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: var(--panel);
+      padding: 16px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .job-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: baseline;
+    }
+
+    .job h3 {
+      margin: 0;
+      font-size: 16px;
+    }
+
+    .job .where {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 2px;
+    }
+
+    .job .when {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--faint);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .job ul {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .job li { margin: 6px 0; }
+
+    .tag-cloud {
+      margin-top: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tag {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 5px 10px;
+      font-size: 11px;
+      font-family: var(--mono);
+      color: var(--muted);
+      background: color-mix(in srgb, var(--panel) 84%, transparent);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .quote {
+      margin-top: 16px;
+      border-left: 3px solid var(--cyan);
+      padding: 10px 12px;
+      color: var(--text);
+      font-size: 16px;
+      background: color-mix(in srgb, var(--panel) 88%, transparent);
+      border-radius: 0 12px 12px 0;
+    }
+
+    .footer {
+      margin-top: 20px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: var(--panel);
+      padding: 13px 15px;
+      color: var(--faint);
+      font-family: var(--mono);
+      font-size: 12px;
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .toast {
+      position: fixed;
+      right: 16px;
+      bottom: 16px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: color-mix(in srgb, var(--bg) 88%, transparent);
+      color: var(--text);
+      padding: 9px 12px;
+      font-size: 12px;
+      font-family: var(--mono);
+      opacity: 0;
+      transform: translateY(8px);
+      pointer-events: none;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      backdrop-filter: blur(8px);
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    [data-reveal] {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    [data-reveal].visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 1024px) {
+      .hero { grid-template-columns: 1fr; }
+      .highlight,
+      .impact-grid,
+      .stack-grid,
+      .contact-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 720px) {
+      .nav { padding: 10px 14px; }
+      .menu a { display: none; }
+      main { padding: 18px 14px 74px; }
+      .hero,
+      .section { padding: 18px; }
+      h1 { font-size: clamp(30px, 11vw, 48px); }
+      .highlight,
+      .impact-grid,
+      .stack-grid,
+      .contact-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Jonathan Rauzada",
+      "jobTitle": "Software Engineer, Backend",
+      "address": {"@type": "PostalAddress", "addressLocality": "Toulouse", "addressCountry": "FR"},
+      "email": "jonathan.rauzada@epitech.eu",
+      "url": "https://linkedin.com/in/jonathan-rauzada",
+      "sameAs": ["https://github.com/rauzadaj", "https://linkedin.com/in/jonathan-rauzada"]
+    }
+  </script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="nav">
+      <a class="brand" href="#top" aria-label="Retour en haut">
+        <div class="sigil" aria-hidden="true">JR</div>
+        <div>
+          <strong>Jonathan Rauzada</strong>
+          <span>Backend Engineer For Product Teams</span>
+        </div>
+      </a>
+
+      <nav class="menu" aria-label="Navigation principale">
+        <a href="#impact">Impact</a>
+        <a href="#experience">Expériences</a>
+        <a href="#stack">Stack</a>
+        <a href="#contact">Contact</a>
+        <button class="btn" id="themeBtn" type="button">Theme</button>
+        <button class="btn primary" id="copyEmailBtn" type="button">Copier email</button>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="top" data-reveal>
+      <div>
+        <div class="eyebrow">
+          <span class="dot" aria-hidden="true"></span>
+          Disponible pour missions backend
+        </div>
+        <h1>Je transforme des <span class="accent">backends complexes</span> en <span class="accent2">moteurs business rapides</span>.</h1>
+        <p class="lead">9 ans d'expérience pour stabiliser la prod, accélérer les traitements et livrer des APIs qui encaissent la charge. Symfony, PostgreSQL, RabbitMQ, Redis, Docker.</p>
+
+        <div class="cta-row">
+          <a class="btn primary" href="#contact">Lancer une discussion</a>
+          <a class="btn" href="https://github.com/rauzadaj" target="_blank" rel="noreferrer noopener">GitHub</a>
+          <a class="btn" href="https://linkedin.com/in/jonathan-rauzada" target="_blank" rel="noreferrer noopener">LinkedIn</a>
+        </div>
+
+        <p class="quote">"Pas de backend spectaculaire en démo. Du backend fiable qui fait gagner du temps, de la marge et des nuits de sommeil."</p>
+      </div>
+
+      <aside class="signal-grid" aria-label="Signaux de performance">
+        <article class="signal">
+          <b>-84%</b>
+          <span>Temps de traitement sur un pipeline d'import volumineux</span>
+          <em>PostgreSQL / Batch / Symfony</em>
+        </article>
+        <article class="signal">
+          <b>SSE live</b>
+          <span>Suivi en temps réel de process longs via Mercure sans polling agressif</span>
+          <em>RabbitMQ / Mercure</em>
+        </article>
+        <article class="signal">
+          <b>9 ans</b>
+          <span>Conception, refactor, industrialisation et delivery en production</span>
+          <em>Produit / SaaS / Legacy</em>
+        </article>
+      </aside>
+    </section>
+
+    <section class="section" id="about" data-reveal>
+      <h2>Pourquoi moi, pas un autre</h2>
+      <p class="section-intro">Tu ne cherches pas seulement quelqu'un qui code. Tu cherches quelqu'un qui comprend les effets réels du backend sur ton business: coûts infra, vitesse produit, fiabilité, dette technique.</p>
+      <div class="highlight">
+        <div>
+          <strong>Vision produit</strong>
+          <p>Chaque décision technique est reliée à un impact concret côté utilisateurs et revenus.</p>
+        </div>
+        <div>
+          <strong>Discipline d'exécution</strong>
+          <p>Mesurer, corriger, tester, déployer, monitorer. Méthode simple, résultats solides.</p>
+        </div>
+        <div>
+          <strong>Clarté technique</strong>
+          <p>Je simplifie les systèmes compliqués pour que l'équipe puisse accélérer sans casser la prod.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="impact" data-reveal>
+      <h2>Impact concret</h2>
+      <p class="section-intro">Des interventions qui changent la trajectoire d'un produit, pas des features décoratives.</p>
+      <div class="impact-grid">
+        <article class="impact-card">
+          <h3>Optimisation import</h3>
+          <p>Index DB ciblés, réduction des flush ORM, traitement par batch et diffusion de statuts via Mercure pour absorber la volumétrie.</p>
+          <div class="impact-value">Résultat: -84% sur le temps de traitement</div>
+        </article>
+        <article class="impact-card">
+          <h3>Temps réel sur process longs</h3>
+          <p>Publication d'événements et stream SSE via Mercure pour rendre l'avancement visible en continu.</p>
+          <div class="impact-value">Résultat: UX plus fluide, moins de friction</div>
+        </article>
+        <article class="impact-card">
+          <h3>Recherche temps réel - Izidore</h3>
+          <p>Intégration Algolia et indexation pour accélérer la recherche et délester la base transactionnelle.</p>
+          <div class="impact-value">Résultat: latence réduite, pertinence perçue en hausse</div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="experience" data-reveal>
+      <h2>Expériences</h2>
+      <div class="timeline">
+        <article class="job">
+          <div class="job-top">
+            <div>
+              <h3>Backend Engineer — iSYBUY (Do iT Platinium)</h3>
+              <div class="where">Symfony · REST APIs · RabbitMQ · Mercure · Docker CI/CD</div>
+            </div>
+            <div class="when">Juillet 2024 - Aujourd'hui</div>
+          </div>
+          <ul>
+            <li>Backends Symfony scalables et APIs connectées à des plateformes internes.</li>
+            <li>Traitements asynchrones avec RabbitMQ pour industrialiser la charge.</li>
+            <li>Streaming temps réel avec Mercure pour le suivi des jobs longs.</li>
+            <li>Optimisation d'un pipeline d'import: -84% sur le temps de traitement.</li>
+          </ul>
+        </article>
+
+        <article class="job">
+          <div class="job-top">
+            <div>
+              <h3>Backend Engineer — Izidore</h3>
+              <div class="where">Symfony · Vue.js · Algolia · Tests</div>
+            </div>
+            <div class="when">Juillet 2023 - Octobre 2023</div>
+          </div>
+          <ul>
+            <li>Maintenance et amélioration continue des services backend.</li>
+            <li>Intégration Algolia pour recherche et indexation en temps réel.</li>
+            <li>Renforcement de la fiabilité avec tests unitaires et fonctionnels.</li>
+          </ul>
+        </article>
+
+        <article class="job">
+          <div class="job-top">
+            <div>
+              <h3>Fullstack Engineer — Delta RM</h3>
+              <div class="where">SaaS · PostgreSQL · REST APIs · Docker</div>
+            </div>
+            <div class="when">Novembre 2021 - Juillet 2022</div>
+          </div>
+          <ul>
+            <li>Renfort sur un produit SaaS existant avec objectif de migration vers une nouvelle version de Symfony.</li>
+            <li>Refactor de logique legacy sortie des stored procedures.</li>
+            <li>Découplage via repositories pour maintenabilité et testabilité.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="stack" data-reveal>
+      <h2>Stack de mission</h2>
+      <div class="stack-grid">
+        <article class="stack-card">
+          <h3>Backend Core</h3>
+          <p>Symfony, PHP, REST APIs, architecture orientée robustesse.</p>
+          <div class="tag-cloud">
+            <span class="tag">Symfony</span>
+            <span class="tag">PHP</span>
+            <span class="tag">REST</span>
+          </div>
+        </article>
+        <article class="stack-card">
+          <h3>Data et performance</h3>
+          <p>PostgreSQL, Redis, Varnish, indexing, tuning de requêtes, batch processing.</p>
+          <div class="tag-cloud">
+            <span class="tag">PostgreSQL</span>
+            <span class="tag">Redis</span>
+            <span class="tag">Varnish</span>
+          </div>
+        </article>
+        <article class="stack-card">
+          <h3>Delivery et production</h3>
+          <p>RabbitMQ, Mercure/SSE, Docker, CI/CD, Linux.</p>
+          <div class="tag-cloud">
+            <span class="tag">RabbitMQ</span>
+            <span class="tag">Mercure</span>
+            <span class="tag">Docker</span>
+            <span class="tag">CI/CD</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="contact" data-reveal>
+      <h2>Contact</h2>
+      <p class="section-intro">Si ton produit a besoin d'un backend fiable, rapide et proprement industrialisé, on peut parler mission.</p>
+      <div class="contact-grid">
+        <article class="contact-card">
+          <h3>Email direct</h3>
+          <p><a href="mailto:jonathan.rauzada@epitech.eu">jonathan.rauzada@epitech.eu</a></p>
+          <div class="tag-cloud"><span class="tag">Réponse rapide</span></div>
+        </article>
+        <article class="contact-card">
+          <h3>Profil public</h3>
+          <p><a href="https://linkedin.com/in/jonathan-rauzada" target="_blank" rel="noreferrer noopener">LinkedIn</a> · <a href="https://github.com/rauzadaj" target="_blank" rel="noreferrer noopener">GitHub</a></p>
+          <div class="tag-cloud"><span class="tag">Ouvert aux missions</span></div>
+        </article>
+        <article class="contact-card">
+          <h3>Zone</h3>
+          <p>Toulouse, France · Remote friendly</p>
+          <div class="tag-cloud"><span class="tag">FR</span><span class="tag">EN B2</span></div>
+        </article>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <span>© <span id="year"></span> Jonathan Rauzada</span>
+      <span>Backend Engineer · Symfony · APIs · Async · Performance</span>
+    </footer>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    (function () {
+      const root = document.documentElement;
+      const themeBtn = document.getElementById("themeBtn");
+      const copyEmailBtn = document.getElementById("copyEmailBtn");
+      const toast = document.getElementById("toast");
+      const email = "jonathan.rauzada@epitech.eu";
+
+      document.getElementById("year").textContent = String(new Date().getFullYear());
+
+      function showToast(message) {
+        toast.textContent = message;
+        toast.classList.add("show");
+        clearTimeout(showToast._t);
+        showToast._t = setTimeout(function () {
+          toast.classList.remove("show");
+        }, 1700);
+      }
+
+      function getTheme() {
+        return localStorage.getItem("theme") || "dark";
+      }
+
+      function setTheme(theme) {
+        if (theme === "light") {
+          root.setAttribute("data-theme", "light");
+        } else {
+          root.removeAttribute("data-theme");
+        }
+        localStorage.setItem("theme", theme);
+      }
+
+      setTheme(getTheme());
+
+      themeBtn.addEventListener("click", function () {
+        const next = getTheme() === "dark" ? "light" : "dark";
+        setTheme(next);
+        showToast(next === "light" ? "Theme clair" : "Theme sombre");
+      });
+
+      async function copyToClipboard(text) {
+        try {
+          await navigator.clipboard.writeText(text);
+          return true;
+        } catch (_) {
+          const ta = document.createElement("textarea");
+          ta.value = text;
+          ta.style.position = "fixed";
+          ta.style.opacity = "0";
+          document.body.appendChild(ta);
+          ta.select();
+          let ok = false;
+          try {
+            ok = document.execCommand("copy");
+          } catch (_) {
+            ok = false;
+          }
+          document.body.removeChild(ta);
+          return ok;
+        }
+      }
+
+      copyEmailBtn.addEventListener("click", async function () {
+        const ok = await copyToClipboard(email);
+        showToast(ok ? "Email copie" : "Copie impossible");
+      });
+
+      document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
+        anchor.addEventListener("click", function (event) {
+          const href = anchor.getAttribute("href");
+          if (!href || href.length < 2) return;
+          const target = document.querySelector(href);
+          if (!target) return;
+          event.preventDefault();
+          target.scrollIntoView({ behavior: "smooth", block: "start" });
+          history.replaceState(null, "", href);
+        });
+      });
+
+      const observer = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("visible");
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.14 }
+      );
+
+      document.querySelectorAll("[data-reveal]").forEach(function (el) {
+        observer.observe(el);
+      });
+    })();
+  </script>
+</body>
+</html>
+
+
