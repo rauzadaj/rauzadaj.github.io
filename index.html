@@ -196,7 +196,8 @@ h2{
   font-family:var(--mono);font-size:11.5px;letter-spacing:.05em;
   border-bottom:2px solid var(--signal);padding-bottom:2px;
 }
-@media(min-width:860px){.cases{grid-template-columns:repeat(3,1fr)}}
+.case .where.todo{color:var(--signal)}
+@media(min-width:760px){.cases{grid-template-columns:repeat(2,1fr)}}
 
 /* timeline */
 .tl{border-top:1px solid var(--rule)}
@@ -371,7 +372,7 @@ footer{
   <section class="block" id="cas">
     <div class="wrap">
       <div class="block-head">
-        <h2 data-fr="Trois choses que j'ai réparées" data-en="Three things I fixed"></h2>
+        <h2 data-fr="Quatre choses que j'ai réparées" data-en="Four things I fixed"></h2>
         <p class="block-note"
            data-fr="Pas des features de démo. Des problèmes qui coûtaient du temps machine, du temps humain ou des clients."
            data-en="Not demo features. Problems that were costing machine time, human time or customers."></p>
@@ -400,6 +401,14 @@ footer{
           <p data-fr="Portail captif adossé à FreeRADIUS, dimensionné pour tenir des sessions simultanées à grande échelle sur des sites événementiels."
              data-en="Captive portal backed by FreeRADIUS, sized to hold large numbers of concurrent sessions on event venues."></p>
           <span class="out" data-fr="10 000 sessions simultanées" data-en="10,000 concurrent sessions"></span>
+        </article>
+
+        <article class="case">
+          <span class="where">iSYBUY</span>
+          <h3 data-fr="Un upload qui acceptait n'importe quoi" data-en="An upload that accepted anything"></h3>
+          <p data-fr="Un test d'intrusion a remonté une faille sur l'envoi de fichiers. Mise en place d'une chaîne de validation complète : détection du vrai type MIME au lieu de faire confiance à l'en-tête, liste blanche d'extensions, renommage, stockage hors de la racine web, puis analyse antivirus ClamAV avant que le fichier soit servi."
+             data-en="A penetration test flagged a file upload vulnerability. Built a full validation chain: real MIME type detection instead of trusting the declared header, extension allowlist, renaming, storage outside the web root, then a ClamAV antivirus scan before the file is ever served."></p>
+          <span class="out" data-fr="Faille fermée au contre-test" data-en="Finding closed on retest"></span>
         </article>
       </div>
     </div>
@@ -527,6 +536,11 @@ footer{
             <td data-fr="Qualité" data-en="Quality"></td>
             <td data-fr="PHPUnit, PHPStan, GitHub Actions, une PR par sujet, CI verte avant merge"
                 data-en="PHPUnit, PHPStan, GitHub Actions, one PR per issue, green CI before merge"></td>
+          </tr>
+          <tr>
+            <td data-fr="Sécurité" data-en="Security"></td>
+            <td data-fr="Remédiation post-pentest, validation d'uploads, détection de type MIME, analyse ClamAV"
+                data-en="Post-pentest remediation, upload validation, MIME type detection, ClamAV scanning"></td>
           </tr>
           <tr>
             <td data-fr="Exploitation" data-en="Runtime"></td>
