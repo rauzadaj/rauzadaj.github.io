@@ -1,890 +1,733 @@
 <!doctype html>
 <html lang="fr">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Jonathan Rauzada — Backend Engineer. J'accélère des produits en fiabilisant APIs, traitements async et performance backend." />
-  <meta name="theme-color" content="#0b0d12" />
-
-  <meta property="og:title" content="Jonathan Rauzada — Backend Engineer" />
-  <meta property="og:description" content="Backend qui tient la charge, optimise les coûts et accélère la livraison produit." />
-  <meta property="og:type" content="website" />
-
-  <title>Jonathan Rauzada — Backend Engineer</title>
-
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
-
-    :root {
-      --bg: #0b0d12;
-      --bg-soft: #121722;
-      --panel: rgba(255, 255, 255, 0.05);
-      --panel-strong: rgba(255, 255, 255, 0.09);
-      --line: rgba(255, 255, 255, 0.16);
-      --text: #f2f5f9;
-      --muted: rgba(242, 245, 249, 0.75);
-      --faint: rgba(242, 245, 249, 0.56);
-      --cyan: #58d2ff;
-      --amber: #ffbb55;
-      --coral: #ff6f61;
-      --green: #88ffb8;
-      --radius: 20px;
-      --radius-lg: 28px;
-      --max: 1180px;
-      --sans: "Space Grotesk", "Avenir Next", "Segoe UI", sans-serif;
-      --mono: "IBM Plex Mono", "Consolas", monospace;
-      --shadow: 0 26px 54px rgba(0, 0, 0, 0.38);
-    }
-
-    [data-theme="light"] {
-      --bg: #f5f1e8;
-      --bg-soft: #fdf9f0;
-      --panel: rgba(18, 23, 34, 0.05);
-      --panel-strong: rgba(18, 23, 34, 0.08);
-      --line: rgba(18, 23, 34, 0.18);
-      --text: #121722;
-      --muted: rgba(18, 23, 34, 0.75);
-      --faint: rgba(18, 23, 34, 0.58);
-      --cyan: #147ea4;
-      --amber: #b56a05;
-      --coral: #b6372f;
-      --green: #097a4b;
-      --shadow: 0 22px 40px rgba(39, 31, 17, 0.16);
-    }
-
-    * { box-sizing: border-box; }
-    html, body { margin: 0; padding: 0; }
-
-    body {
-      font-family: var(--sans);
-      color: var(--text);
-      background:
-        radial-gradient(860px 560px at 4% 8%, rgba(88, 210, 255, 0.2), transparent 62%),
-        radial-gradient(760px 460px at 95% 20%, rgba(255, 187, 85, 0.18), transparent 60%),
-        radial-gradient(740px 440px at 45% 92%, rgba(255, 111, 97, 0.16), transparent 64%),
-        linear-gradient(160deg, var(--bg), var(--bg-soft));
-      line-height: 1.6;
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
-
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: -1;
-      opacity: 0.25;
-      background-image: linear-gradient(transparent 96%, rgba(255,255,255,0.3) 97%), linear-gradient(90deg, transparent 96%, rgba(255,255,255,0.3) 97%);
-      background-size: 28px 28px;
-      mix-blend-mode: soft-light;
-    }
-
-    a { color: inherit; text-decoration: none; }
-
-    .topbar {
-      position: sticky;
-      top: 0;
-      z-index: 40;
-      border-bottom: 1px solid var(--line);
-      background: color-mix(in srgb, var(--bg) 86%, transparent);
-      backdrop-filter: blur(12px);
-    }
-
-    .nav {
-      max-width: var(--max);
-      margin: 0 auto;
-      padding: 12px 18px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 14px;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      min-width: 220px;
-    }
-
-    .sigil {
-      width: 40px;
-      height: 40px;
-      border-radius: 12px;
-      border: 1px solid var(--line);
-      background:
-        linear-gradient(135deg, rgba(88,210,255,0.24), rgba(255,111,97,0.1)),
-        var(--panel);
-      display: grid;
-      place-items: center;
-      font-family: var(--mono);
-      font-size: 13px;
-      font-weight: 500;
-      letter-spacing: 0.08em;
-      color: var(--text);
-      box-shadow: var(--shadow);
-    }
-
-    .brand strong {
-      display: block;
-      font-size: 15px;
-      letter-spacing: 0.01em;
-    }
-
-    .brand span {
-      display: block;
-      font-size: 11px;
-      color: var(--faint);
-      text-transform: uppercase;
-      letter-spacing: 0.09em;
-    }
-
-    .menu {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
-      justify-content: flex-end;
-    }
-
-    .menu a {
-      padding: 8px 10px;
-      border-radius: 12px;
-      font-size: 12px;
-      color: var(--muted);
-      border: 1px solid transparent;
-    }
-
-    .menu a:hover {
-      border-color: var(--line);
-      background: var(--panel);
-      color: var(--text);
-    }
-
-    .btn {
-      border: 1px solid var(--line);
-      background: var(--panel);
-      color: var(--text);
-      border-radius: 14px;
-      padding: 9px 12px;
-      font-size: 12px;
-      font-family: var(--mono);
-      cursor: pointer;
-      transition: transform 0.2s ease, background 0.2s ease;
-    }
-
-    .btn:hover {
-      transform: translateY(-1px);
-      background: var(--panel-strong);
-    }
-
-    .btn.primary {
-      border-color: color-mix(in srgb, var(--cyan) 40%, var(--line));
-      background: linear-gradient(125deg, rgba(88,210,255,0.18), rgba(255,187,85,0.16));
-    }
-
-    main {
-      max-width: var(--max);
-      margin: 0 auto;
-      padding: 26px 18px 84px;
-      position: relative;
-    }
-
-    .hero {
-      margin-top: 10px;
-      border: 1px solid var(--line);
-      border-radius: var(--radius-lg);
-      background: linear-gradient(145deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
-      box-shadow: var(--shadow);
-      padding: 30px;
-      position: relative;
-      overflow: hidden;
-      display: grid;
-      grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
-      gap: 22px;
-    }
-
-    .hero::after {
-      content: "";
-      position: absolute;
-      inset: -2px;
-      pointer-events: none;
-      background:
-        radial-gradient(460px 240px at 14% 8%, rgba(88,210,255,0.18), transparent 62%),
-        radial-gradient(480px 280px at 86% 20%, rgba(255,187,85,0.16), transparent 64%),
-        radial-gradient(400px 240px at 50% 100%, rgba(255,111,97,0.14), transparent 62%);
-      opacity: 0.9;
-    }
-
-    .hero > * { position: relative; z-index: 1; }
-
-    .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      border: 1px solid var(--line);
-      background: var(--panel);
-      border-radius: 999px;
-      padding: 6px 12px;
-      font-size: 12px;
-      font-family: var(--mono);
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: var(--muted);
-    }
-
-    .dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: var(--green);
-      box-shadow: 0 0 0 6px rgba(136,255,184,0.14);
-      animation: pulse 2.4s infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.35); }
-    }
-
-    h1 {
-      margin: 16px 0 10px;
-      font-size: clamp(34px, 5vw, 62px);
-      line-height: 0.98;
-      letter-spacing: -0.03em;
-      text-wrap: balance;
-    }
-
-    h1 .accent { color: var(--cyan); }
-    h1 .accent2 { color: var(--amber); }
-
-    .lead {
-      margin: 0;
-      max-width: 56ch;
-      color: var(--muted);
-      font-size: clamp(15px, 2vw, 18px);
-    }
-
-    .cta-row {
-      margin-top: 20px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      align-items: center;
-    }
-
-    .signal-grid {
-      display: grid;
-      gap: 10px;
-      align-content: start;
-    }
-
-    .signal {
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      background: color-mix(in srgb, var(--panel) 86%, transparent);
-      padding: 14px;
-    }
-
-    .signal b {
-      display: block;
-      font-size: 28px;
-      line-height: 1;
-      margin-bottom: 4px;
-      letter-spacing: -0.03em;
-    }
-
-    .signal span {
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    .signal em {
-      display: inline-block;
-      margin-top: 7px;
-      font-style: normal;
-      font-family: var(--mono);
-      font-size: 11px;
-      color: var(--faint);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-    }
-
-    .section {
-      margin-top: 20px;
-      border: 1px solid var(--line);
-      border-radius: var(--radius-lg);
-      background: color-mix(in srgb, var(--bg-soft) 82%, transparent);
-      padding: 24px;
-      box-shadow: var(--shadow);
-    }
-
-    .section h2 {
-      margin: 0;
-      font-size: clamp(24px, 3vw, 34px);
-      letter-spacing: -0.03em;
-    }
-
-    .section-intro {
-      margin-top: 8px;
-      color: var(--muted);
-      max-width: 68ch;
-    }
-
-    .highlight {
-      margin-top: 16px;
-      border: 1px dashed var(--line);
-      border-radius: 18px;
-      padding: 14px;
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 10px;
-    }
-
-    .highlight div {
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      padding: 12px;
-      background: var(--panel);
-    }
-
-    .highlight strong {
-      display: block;
-      font-size: 13px;
-      margin-bottom: 4px;
-    }
-
-    .highlight p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    .impact-grid,
-    .stack-grid,
-    .contact-grid {
-      margin-top: 16px;
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 10px;
-    }
-
-    .impact-card,
-    .stack-card,
-    .contact-card {
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      background: var(--panel);
-      padding: 15px;
-    }
-
-    .impact-card h3,
-    .stack-card h3,
-    .contact-card h3 {
-      margin: 0;
-      font-size: 14px;
-      letter-spacing: 0.01em;
-    }
-
-    .impact-card p,
-    .stack-card p,
-    .contact-card p {
-      margin: 8px 0 0;
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    .impact-value {
-      margin-top: 10px;
-      display: inline-flex;
-      border-radius: 999px;
-      border: 1px solid color-mix(in srgb, var(--green) 50%, var(--line));
-      background: color-mix(in srgb, var(--green) 16%, var(--panel));
-      padding: 6px 10px;
-      font-family: var(--mono);
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-    }
-
-    .timeline {
-      margin-top: 16px;
-      display: grid;
-      gap: 10px;
-    }
-
-    .job {
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      background: var(--panel);
-      padding: 16px;
-      display: grid;
-      gap: 10px;
-    }
-
-    .job-top {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      flex-wrap: wrap;
-      align-items: baseline;
-    }
-
-    .job h3 {
-      margin: 0;
-      font-size: 16px;
-    }
-
-    .job .where {
-      color: var(--muted);
-      font-size: 13px;
-      margin-top: 2px;
-    }
-
-    .job .when {
-      font-family: var(--mono);
-      font-size: 11px;
-      color: var(--faint);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-    }
-
-    .job ul {
-      margin: 0;
-      padding-left: 18px;
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    .job li { margin: 6px 0; }
-
-    .tag-cloud {
-      margin-top: 12px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    .tag {
-      border: 1px solid var(--line);
-      border-radius: 999px;
-      padding: 5px 10px;
-      font-size: 11px;
-      font-family: var(--mono);
-      color: var(--muted);
-      background: color-mix(in srgb, var(--panel) 84%, transparent);
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-    }
-
-    .quote {
-      margin-top: 16px;
-      border-left: 3px solid var(--cyan);
-      padding: 10px 12px;
-      color: var(--text);
-      font-size: 16px;
-      background: color-mix(in srgb, var(--panel) 88%, transparent);
-      border-radius: 0 12px 12px 0;
-    }
-
-    .footer {
-      margin-top: 20px;
-      border: 1px solid var(--line);
-      border-radius: 18px;
-      background: var(--panel);
-      padding: 13px 15px;
-      color: var(--faint);
-      font-family: var(--mono);
-      font-size: 12px;
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .toast {
-      position: fixed;
-      right: 16px;
-      bottom: 16px;
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      background: color-mix(in srgb, var(--bg) 88%, transparent);
-      color: var(--text);
-      padding: 9px 12px;
-      font-size: 12px;
-      font-family: var(--mono);
-      opacity: 0;
-      transform: translateY(8px);
-      pointer-events: none;
-      transition: opacity 0.2s ease, transform 0.2s ease;
-      backdrop-filter: blur(8px);
-    }
-
-    .toast.show {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    [data-reveal] {
-      opacity: 0;
-      transform: translateY(20px);
-      transition: opacity 0.7s ease, transform 0.7s ease;
-    }
-
-    [data-reveal].visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    @media (max-width: 1024px) {
-      .hero { grid-template-columns: 1fr; }
-      .highlight,
-      .impact-grid,
-      .stack-grid,
-      .contact-grid { grid-template-columns: 1fr 1fr; }
-    }
-
-    @media (max-width: 720px) {
-      .nav { padding: 10px 14px; }
-      .menu a { display: none; }
-      main { padding: 18px 14px 74px; }
-      .hero,
-      .section { padding: 18px; }
-      h1 { font-size: clamp(30px, 11vw, 48px); }
-      .highlight,
-      .impact-grid,
-      .stack-grid,
-      .contact-grid { grid-template-columns: 1fr; }
-    }
-  </style>
-
-  <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Person",
-      "name": "Jonathan Rauzada",
-      "jobTitle": "Software Engineer, Backend",
-      "address": {"@type": "PostalAddress", "addressLocality": "Toulouse", "addressCountry": "FR"},
-      "email": "jonathan.rauzada@epitech.eu",
-      "url": "https://linkedin.com/in/jonathan-rauzada",
-      "sameAs": ["https://github.com/rauzadaj", "https://linkedin.com/in/jonathan-rauzada"]
-    }
-  </script>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="Jonathan Rauzada, ingénieur backend Symfony. Performance, traitements asynchrones, APIs qui tiennent la charge. Disponible en CDI ou en mission." />
+<meta name="theme-color" content="#E5E8E6" />
+<meta property="og:title" content="Jonathan Rauzada, ingénieur backend Symfony" />
+<meta property="og:description" content="Je fais baisser les temps d'exécution. Symfony, PostgreSQL, RabbitMQ, Mercure." />
+<meta property="og:type" content="profile" />
+<title>Jonathan Rauzada, ingénieur backend Symfony</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=JetBrains+Mono:wght@400;500&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+
+<style>
+:root{
+  --paper:#E5E8E6;
+  --paper-2:#F1F3F1;
+  --ink:#15181A;
+  --ink-70:rgba(21,24,26,.70);
+  --ink-45:rgba(21,24,26,.45);
+  --ink-25:rgba(21,24,26,.25);
+  --rule:rgba(21,24,26,.15);
+  --signal:#D1005A;
+  --deep:#1B3A4B;
+
+  --display:"Bricolage Grotesque","Helvetica Neue",sans-serif;
+  --body:"Public Sans","Helvetica Neue",Arial,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+
+  --max:1080px;
+  --gut:clamp(20px,5vw,48px);
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--body);
+  font-size:16px;
+  line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+  font-variant-numeric:tabular-nums;
+}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--signal);outline-offset:3px;border-radius:2px}
+
+.wrap{max-width:var(--max);margin:0 auto;padding:0 var(--gut)}
+
+/* ---------- eyebrow / labels ---------- */
+.label{
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--ink-45);
+}
+
+/* ---------- header ---------- */
+.topbar{
+  position:sticky;top:0;z-index:50;
+  background:color-mix(in srgb,var(--paper) 92%,transparent);
+  backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--rule);
+}
+.topbar .wrap{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:16px;min-height:62px;
+}
+.ident{display:flex;align-items:center;gap:12px;text-decoration:none}
+.mark{
+  width:34px;height:34px;flex:none;
+  border:1px solid var(--ink);
+  display:grid;place-items:center;
+  font-family:var(--mono);font-size:11px;letter-spacing:.06em;
+}
+.ident b{display:block;font-family:var(--display);font-weight:500;font-size:15px;line-height:1.2}
+.ident span{display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-45)}
+
+.tools{display:flex;align-items:center;gap:10px}
+
+.lang{display:flex;border:1px solid var(--rule);font-family:var(--mono);font-size:11px}
+.lang button{
+  appearance:none;border:0;background:transparent;color:var(--ink-45);
+  padding:6px 10px;cursor:pointer;font:inherit;letter-spacing:.08em;
+}
+.lang button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+
+.copy-btn{
+  appearance:none;background:transparent;border:1px solid var(--ink);
+  color:var(--ink);font-family:var(--mono);font-size:11px;letter-spacing:.06em;
+  padding:7px 12px;cursor:pointer;
+  transition:background .18s ease,color .18s ease;
+}
+.copy-btn:hover{background:var(--ink);color:var(--paper)}
+
+/* ---------- hero ---------- */
+.hero{padding:clamp(48px,9vw,96px) 0 clamp(36px,6vw,56px)}
+.status{display:inline-flex;align-items:center;gap:9px;margin-bottom:26px}
+.status i{
+  width:7px;height:7px;border-radius:50%;background:var(--signal);
+  box-shadow:0 0 0 4px rgba(209,0,90,.16);
+}
+h1{
+  font-family:var(--display);
+  font-weight:800;
+  font-size:clamp(38px,7.2vw,78px);
+  line-height:.98;
+  letter-spacing:-.035em;
+  margin:0 0 22px;
+  max-width:16ch;
+  text-wrap:balance;
+}
+h1 em{font-style:normal;color:var(--signal)}
+.lead{
+  margin:0;max-width:60ch;font-size:clamp(16px,1.5vw,18.5px);
+  color:var(--ink-70);
+}
+
+/* ---------- signature: trace ---------- */
+.trace{
+  margin-top:clamp(36px,6vw,56px);
+  border:1px solid var(--ink);
+  background:var(--paper-2);
+}
+.trace-head{
+  display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;
+  padding:11px 18px;border-bottom:1px solid var(--rule);
+  font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ink-45);
+}
+.trace-head b{color:var(--ink);font-weight:500}
+.trace-body{padding:24px 18px 18px;position:relative}
+
+.axis{position:absolute;inset:24px 18px 46px;display:flex;justify-content:space-between;pointer-events:none}
+.axis span{width:1px;background:var(--ink-25);opacity:.5}
+.axis span:first-child,.axis span:last-child{background:var(--rule)}
+
+.row{position:relative;margin-bottom:22px}
+.row-top{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:7px}
+.row-name{font-family:var(--mono);font-size:11.5px;letter-spacing:.12em;text-transform:uppercase}
+.row-val{font-family:var(--mono);font-size:13px;font-weight:500}
+.track{height:22px;background:rgba(21,24,26,.06);position:relative}
+.fill{
+  height:100%;width:0;
+  transition:width 1s cubic-bezier(.2,.7,.2,1);
+}
+.run .fill{width:var(--w)}
+.fill.before{background:var(--ink-25);transition-delay:.1s}
+.fill.after{background:var(--signal);transition-delay:.5s}
+.row-note{margin:7px 0 0;font-size:13px;color:var(--ink-70)}
+
+.delta{
+  border-top:1px solid var(--rule);
+  margin-top:26px;padding-top:14px;
+  display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;
+}
+.delta b{
+  font-family:var(--display);font-weight:800;font-size:clamp(28px,4.4vw,40px);
+  letter-spacing:-.03em;color:var(--signal);line-height:1;
+}
+.delta span{font-size:14px;color:var(--ink-70)}
+
+.cta{margin-top:30px;display:flex;gap:12px;flex-wrap:wrap}
+.cta a{
+  font-family:var(--mono);font-size:12px;letter-spacing:.06em;
+  padding:13px 20px;text-decoration:none;border:1px solid var(--ink);
+  transition:transform .18s ease,background .18s ease,color .18s ease;
+}
+.cta a:hover{transform:translateY(-2px)}
+.cta a.solid{background:var(--ink);color:var(--paper)}
+.cta a.solid:hover{background:var(--signal);border-color:var(--signal)}
+.cta a.ghost:hover{background:var(--ink);color:var(--paper)}
+
+/* ---------- sections ---------- */
+section.block{padding:clamp(46px,7vw,80px) 0;border-top:1px solid var(--rule)}
+.block-head{display:flex;align-items:baseline;gap:18px;margin-bottom:34px;flex-wrap:wrap}
+h2{
+  font-family:var(--display);font-weight:800;
+  font-size:clamp(24px,3.6vw,38px);letter-spacing:-.03em;margin:0;line-height:1.04;
+}
+.block-note{margin:0;max-width:62ch;color:var(--ink-70);font-size:15px}
+
+/* cases */
+.cases{display:grid;gap:1px;background:var(--rule);border:1px solid var(--rule)}
+.case{background:var(--paper);padding:24px 22px}
+.case h3{font-family:var(--display);font-weight:500;font-size:18px;margin:0 0 4px;letter-spacing:-.01em}
+.case .where{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-45)}
+.case p{margin:12px 0 0;font-size:14.5px;color:var(--ink-70)}
+.case .out{
+  display:inline-block;margin-top:14px;
+  font-family:var(--mono);font-size:11.5px;letter-spacing:.05em;
+  border-bottom:2px solid var(--signal);padding-bottom:2px;
+}
+@media(min-width:860px){.cases{grid-template-columns:repeat(3,1fr)}}
+
+/* timeline */
+.tl{border-top:1px solid var(--rule)}
+.tl-row{
+  display:grid;gap:6px 28px;padding:20px 0;border-bottom:1px solid var(--rule);
+}
+@media(min-width:800px){
+  .tl-row{grid-template-columns:170px 1fr;align-items:start}
+}
+.tl-when{font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;color:var(--ink-45);padding-top:4px}
+.tl-row.todo .tl-when{color:var(--signal)}
+.tl-what h3{font-family:var(--display);font-weight:500;font-size:17.5px;margin:0;letter-spacing:-.01em}
+.tl-what p{margin:6px 0 0;font-size:14.5px;color:var(--ink-70)}
+
+/* stack table */
+.stack{width:100%;border-collapse:collapse;font-size:14.5px}
+.stack th{
+  text-align:left;font-family:var(--mono);font-size:11px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--ink-45);font-weight:400;
+  padding:0 16px 10px 0;border-bottom:1px solid var(--ink);
+}
+.stack td{padding:14px 16px 14px 0;border-bottom:1px solid var(--rule);vertical-align:top}
+.stack td:first-child{
+  font-family:var(--mono);font-size:12px;letter-spacing:.05em;
+  text-transform:uppercase;color:var(--ink);white-space:nowrap;
+}
+.stack td:last-child{color:var(--ink-70)}
+
+/* modes */
+.modes{display:grid;gap:1px;background:var(--rule);border:1px solid var(--rule)}
+@media(min-width:800px){.modes{grid-template-columns:1fr 1fr}}
+.mode{background:var(--paper);padding:28px 24px}
+.mode.b{background:var(--paper-2)}
+.mode .label{display:block;margin-bottom:10px}
+.mode h3{font-family:var(--display);font-weight:800;font-size:21px;margin:0 0 12px;letter-spacing:-.02em}
+.mode.a h3{color:var(--deep)}
+.mode.b h3{color:var(--signal)}
+.mode ul{margin:0;padding-left:0;list-style:none}
+.mode li{
+  font-size:14.5px;color:var(--ink-70);padding:9px 0 9px 20px;position:relative;
+  border-top:1px solid var(--rule);
+}
+.mode li:first-child{border-top:0}
+.mode li::before{content:"";position:absolute;left:0;top:18px;width:9px;height:1px;background:var(--ink-25)}
+
+/* contact */
+.contact-grid{display:grid;gap:26px}
+@media(min-width:760px){.contact-grid{grid-template-columns:repeat(3,1fr)}}
+.contact-grid .label{display:block;margin-bottom:8px}
+.contact-grid p{margin:0;font-size:15px}
+.contact-grid a{text-decoration:none;border-bottom:1px solid var(--signal);padding-bottom:1px}
+.contact-grid a:hover{color:var(--signal)}
+
+footer{
+  border-top:1px solid var(--rule);padding:22px 0 40px;
+  font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--ink-45);
+  display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;
+}
+
+/* toast */
+.toast{
+  position:fixed;left:50%;bottom:24px;transform:translate(-50%,10px);
+  background:var(--ink);color:var(--paper);
+  font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;
+  padding:10px 16px;opacity:0;pointer-events:none;
+  transition:opacity .2s ease,transform .2s ease;z-index:80;
+}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+
+/* reveal */
+[data-reveal]{opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .6s ease}
+[data-reveal].seen{opacity:1;transform:none}
+
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *{transition-duration:.001ms !important;animation-duration:.001ms !important}
+  [data-reveal]{opacity:1;transform:none}
+  .fill{width:var(--w) !important}
+}
+</style>
 </head>
+
 <body>
-  <header class="topbar">
-    <div class="nav">
-      <a class="brand" href="#top" aria-label="Retour en haut">
-        <div class="sigil" aria-hidden="true">JR</div>
-        <div>
-          <strong>Jonathan Rauzada</strong>
-          <span>Backend Engineer For Product Teams</span>
-        </div>
-      </a>
 
-      <nav class="menu" aria-label="Navigation principale">
-        <a href="#impact">Impact</a>
-        <a href="#experience">Expériences</a>
-        <a href="#stack">Stack</a>
-        <a href="#contact">Contact</a>
-        <button class="btn" id="themeBtn" type="button">Theme</button>
-        <button class="btn primary" id="copyEmailBtn" type="button">Copier email</button>
-      </nav>
+<header class="topbar">
+  <div class="wrap">
+    <a class="ident" href="#top">
+      <span class="mark" aria-hidden="true">JR</span>
+      <span>
+        <b>Jonathan Rauzada</b>
+        <span data-fr="Ingénieur backend · Symfony" data-en="Backend engineer · Symfony"></span>
+      </span>
+    </a>
+
+    <div class="tools">
+      <div class="lang" role="group" data-fr-label="Langue du site" data-en-label="Site language">
+        <button type="button" data-lang="fr" aria-pressed="true">FR</button>
+        <button type="button" data-lang="en" aria-pressed="false">EN</button>
+      </div>
+      <button class="copy-btn" id="copyEmail" type="button"
+        data-fr="Copier l'email" data-en="Copy email"></button>
     </div>
-  </header>
+  </div>
+</header>
 
-  <main>
-    <section class="hero" id="top" data-reveal>
-      <div>
-        <div class="eyebrow">
-          <span class="dot" aria-hidden="true"></span>
-          Disponible pour missions backend
-        </div>
-        <h1>Je transforme des <span class="accent">backends complexes</span> en <span class="accent2">moteurs business rapides</span>.</h1>
-        <p class="lead">9 ans d'expérience pour stabiliser la prod, accélérer les traitements et livrer des APIs qui encaissent la charge. Symfony, PostgreSQL, RabbitMQ, Redis, Docker.</p>
+<main id="top">
 
-        <div class="cta-row">
-          <a class="btn primary" href="#contact">Lancer une discussion</a>
-          <a class="btn" href="https://github.com/rauzadaj" target="_blank" rel="noreferrer noopener">GitHub</a>
-          <a class="btn" href="https://linkedin.com/in/jonathan-rauzada" target="_blank" rel="noreferrer noopener">LinkedIn</a>
-        </div>
+  <!-- HERO -->
+  <div class="wrap hero">
+    <div class="status label">
+      <i aria-hidden="true"></i>
+      <span data-fr="Ouvert aux postes en CDI et aux missions" data-en="Open to permanent roles and freelance work"></span>
+    </div>
 
-        <p class="quote">"Pas de backend spectaculaire en démo. Du backend fiable qui fait gagner du temps, de la marge et des nuits de sommeil."</p>
+    <h1 data-fr="Je fais baisser les <em>temps d'exécution</em>."
+        data-en="I bring <em>execution times</em> down."></h1>
+
+    <p class="lead"
+       data-fr="Neuf ans sur du backend PHP et Symfony. Je reprends des traitements lents, des APIs fragiles et du code hérité, et je les rends rapides, testés et prévisibles en production."
+       data-en="Nine years on PHP and Symfony backends. I take slow jobs, fragile APIs and inherited code, and make them fast, tested and predictable in production."></p>
+
+    <!-- SIGNATURE -->
+    <div class="trace" data-reveal>
+      <div class="trace-head">
+        <span data-fr="Trace &nbsp;/&nbsp; <b>import fournisseurs</b>" data-en="Trace &nbsp;/&nbsp; <b>supplier import</b>"></span>
+        <span data-fr="iSYBUY &nbsp;/&nbsp; Symfony + PostgreSQL" data-en="iSYBUY &nbsp;/&nbsp; Symfony + PostgreSQL"></span>
       </div>
 
-      <aside class="signal-grid" aria-label="Signaux de performance">
-        <article class="signal">
-          <b>-84%</b>
-          <span>Temps de traitement sur un pipeline d'import volumineux</span>
-          <em>PostgreSQL / Batch / Symfony</em>
-        </article>
-        <article class="signal">
-          <b>SSE live</b>
-          <span>Suivi en temps réel de process longs via Mercure sans polling agressif</span>
-          <em>RabbitMQ / Mercure</em>
-        </article>
-        <article class="signal">
-          <b>9 ans</b>
-          <span>Conception, refactor, industrialisation et delivery en production</span>
-          <em>Produit / SaaS / Legacy</em>
-        </article>
-      </aside>
-    </section>
-
-    <section class="section" id="about" data-reveal>
-      <h2>Pourquoi moi, pas un autre</h2>
-      <p class="section-intro">Tu ne cherches pas seulement quelqu'un qui code. Tu cherches quelqu'un qui comprend les effets réels du backend sur ton business: coûts infra, vitesse produit, fiabilité, dette technique.</p>
-      <div class="highlight">
-        <div>
-          <strong>Vision produit</strong>
-          <p>Chaque décision technique est reliée à un impact concret côté utilisateurs et revenus.</p>
+      <div class="trace-body" id="traceBody">
+        <div class="axis" aria-hidden="true">
+          <span></span><span></span><span></span><span></span><span></span>
         </div>
-        <div>
-          <strong>Discipline d'exécution</strong>
-          <p>Mesurer, corriger, tester, déployer, monitorer. Méthode simple, résultats solides.</p>
-        </div>
-        <div>
-          <strong>Clarté technique</strong>
-          <p>Je simplifie les systèmes compliqués pour que l'équipe puisse accélérer sans casser la prod.</p>
-        </div>
-      </div>
-    </section>
 
-    <section class="section" id="impact" data-reveal>
-      <h2>Impact concret</h2>
-      <p class="section-intro">Des interventions qui changent la trajectoire d'un produit, pas des features décoratives.</p>
-      <div class="impact-grid">
-        <article class="impact-card">
-          <h3>Optimisation import</h3>
-          <p>Index DB ciblés, réduction des flush ORM, traitement par batch et diffusion de statuts via Mercure pour absorber la volumétrie.</p>
-          <div class="impact-value">Résultat: -84% sur le temps de traitement</div>
-        </article>
-        <article class="impact-card">
-          <h3>Temps réel sur process longs</h3>
-          <p>Publication d'événements et stream SSE via Mercure pour rendre l'avancement visible en continu.</p>
-          <div class="impact-value">Résultat: UX plus fluide, moins de friction</div>
-        </article>
-        <article class="impact-card">
-          <h3>Recherche temps réel - Izidore</h3>
-          <p>Intégration Algolia et indexation pour accélérer la recherche et délester la base transactionnelle.</p>
-          <div class="impact-value">Résultat: latence réduite, pertinence perçue en hausse</div>
-        </article>
-      </div>
-    </section>
-
-    <section class="section" id="experience" data-reveal>
-      <h2>Expériences</h2>
-      <div class="timeline">
-        <article class="job">
-          <div class="job-top">
-            <div>
-              <h3>Backend Engineer — iSYBUY (Do iT Platinium)</h3>
-              <div class="where">Symfony · REST APIs · RabbitMQ · Mercure · Docker CI/CD</div>
-            </div>
-            <div class="when">Juillet 2024 - Aujourd'hui</div>
+        <div class="row">
+          <div class="row-top">
+            <span class="row-name" data-fr="Avant" data-en="Before"></span>
+            <span class="row-val">100 %</span>
           </div>
+          <div class="track"><div class="fill before" style="--w:100%"></div></div>
+          <p class="row-note"
+             data-fr="27 000 flush Doctrine, un par ligne importée. La base passait son temps à écrire."
+             data-en="27,000 Doctrine flushes, one per imported row. The database spent its life writing."></p>
+        </div>
+
+        <div class="row">
+          <div class="row-top">
+            <span class="row-name" data-fr="Après" data-en="After"></span>
+            <span class="row-val">20 %</span>
+          </div>
+          <div class="track"><div class="fill after" style="--w:20%"></div></div>
+          <p class="row-note"
+             data-fr="Écriture par lots, index ciblés sur les colonnes de jointure, avancement poussé en SSE au lieu du polling."
+             data-en="Batched writes, targeted indexes on join columns, progress pushed over SSE instead of polling."></p>
+        </div>
+
+        <div class="delta">
+          <b>&minus;80 %</b>
+          <span data-fr="de temps d'exécution, à volumétrie identique et sans changer de machine."
+                data-en="execution time, same data volume, same hardware."></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="cta">
+      <a class="solid" href="#modes" data-fr="Travailler avec moi" data-en="Work with me"></a>
+      <a class="ghost" href="#parcours" data-fr="Voir le parcours" data-en="See the track record"></a>
+      <a class="ghost" href="https://github.com/rauzadaj" target="_blank" rel="noreferrer noopener">GitHub</a>
+    </div>
+  </div>
+
+  <!-- CAS -->
+  <section class="block" id="cas">
+    <div class="wrap">
+      <div class="block-head">
+        <h2 data-fr="Trois choses que j'ai réparées" data-en="Three things I fixed"></h2>
+        <p class="block-note"
+           data-fr="Pas des features de démo. Des problèmes qui coûtaient du temps machine, du temps humain ou des clients."
+           data-en="Not demo features. Problems that were costing machine time, human time or customers."></p>
+      </div>
+
+      <div class="cases" data-reveal>
+        <article class="case">
+          <span class="where">iSYBUY</span>
+          <h3 data-fr="Un import qui bloquait la journée" data-en="An import that ate the day"></h3>
+          <p data-fr="Le traitement écrivait ligne par ligne et saturait la base. Passage en écriture par lots, index posés là où le plan d'exécution le demandait, mesures avant et après."
+             data-en="The job wrote row by row and saturated the database. Moved to batched writes, added indexes where the query plan asked for them, measured before and after."></p>
+          <span class="out" data-fr="80 % de temps en moins" data-en="80% less time"></span>
+        </article>
+
+        <article class="case">
+          <span class="where">iSYBUY</span>
+          <h3 data-fr="Des traitements longs invisibles" data-en="Long jobs with no visibility"></h3>
+          <p data-fr="Les utilisateurs relançaient les imports parce qu'ils ne voyaient rien avancer. Publication d'événements via RabbitMQ et flux SSE avec Mercure pour afficher l'état réel."
+             data-en="Users kept restarting imports because nothing looked like it was moving. Events published through RabbitMQ and streamed over SSE with Mercure to show real state."></p>
+          <span class="out" data-fr="Fin des relances inutiles" data-en="No more pointless restarts"></span>
+        </article>
+
+        <article class="case">
+          <span class="where">Nomosphere</span>
+          <h3 data-fr="Un portail WiFi sous charge" data-en="A WiFi portal under load"></h3>
+          <p data-fr="Portail captif adossé à FreeRADIUS, dimensionné pour tenir des sessions simultanées à grande échelle sur des sites événementiels."
+             data-en="Captive portal backed by FreeRADIUS, sized to hold large numbers of concurrent sessions on event venues."></p>
+          <span class="out" data-fr="10 000 sessions simultanées" data-en="10,000 concurrent sessions"></span>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- PARCOURS -->
+  <section class="block" id="parcours">
+    <div class="wrap">
+      <div class="block-head">
+        <h2 data-fr="Parcours" data-en="Track record"></h2>
+        <p class="block-note"
+           data-fr="Produit, SaaS, télécom, legacy. Toujours du côté serveur."
+           data-en="Product, SaaS, telecom, legacy. Always server side."></p>
+      </div>
+
+      <div class="tl" data-reveal>
+        <div class="tl-row">
+          <div class="tl-when" data-fr="Depuis juin 2026" data-en="Since June 2026"></div>
+          <div class="tl-what">
+            <h3 data-fr="Indépendant, backend Symfony" data-en="Independent, Symfony backend"></h3>
+            <p data-fr="Missions d'audit, de refactor et de performance. Micro-entreprise, TVA, facturation en régie ou au forfait."
+               data-en="Audit, refactoring and performance engagements. Registered business, VAT, time-based or fixed-price."></p>
+          </div>
+        </div>
+
+        <div class="tl-row">
+          <div class="tl-when">nov. 2025 &ndash; févr. 2026</div>
+          <div class="tl-what">
+            <h3>Gladiatek</h3>
+            <p data-fr="Conception et livraison du MVP produit côté backend."
+               data-en="Designed and shipped the backend of the product MVP."></p>
+          </div>
+        </div>
+
+        <div class="tl-row">
+          <div class="tl-when">2024 &ndash; 2025</div>
+          <div class="tl-what">
+            <h3 data-fr="Do iT Platinium, mission iSYBUY" data-en="Do iT Platinium, iSYBUY assignment"></h3>
+            <p data-fr="APIs Symfony, traitements asynchrones RabbitMQ, temps réel Mercure, CI Docker. Optimisation du pipeline d'import."
+               data-en="Symfony APIs, RabbitMQ async processing, Mercure real time, Docker CI. Import pipeline optimisation."></p>
+          </div>
+        </div>
+
+        <div class="tl-row">
+          <div class="tl-when">2023</div>
+          <div class="tl-what">
+            <h3>Izidore</h3>
+            <p data-fr="Maintenance et évolutions backend, indexation Algolia pour délester la base transactionnelle, tests unitaires et fonctionnels."
+               data-en="Backend maintenance and evolutions, Algolia indexing to offload the transactional database, unit and functional tests."></p>
+          </div>
+        </div>
+
+        <div class="tl-row">
+          <div class="tl-when">2021 &ndash; 2022</div>
+          <div class="tl-what">
+            <h3>Delta RM</h3>
+            <p data-fr="Renfort sur un SaaS existant. Sortie de la logique métier des procédures stockées, découplage par repositories, préparation d'une montée de version Symfony."
+               data-en="Reinforcement on an existing SaaS. Pulled business logic out of stored procedures, decoupled through repositories, prepared a Symfony version upgrade."></p>
+          </div>
+        </div>
+
+        <div class="tl-row todo">
+          <div class="tl-when">20XX &ndash; 20XX</div>
+          <div class="tl-what">
+            <h3 data-fr="Somfy Protect by Myfox" data-en="Somfy Protect by Myfox"></h3>
+            <p data-fr="Backend produit sur des objets connectés grand public."
+               data-en="Product backend for consumer connected devices."></p>
+          </div>
+        </div>
+
+        <div class="tl-row todo">
+          <div class="tl-when">20XX &ndash; 20XX</div>
+          <div class="tl-what">
+            <h3>Nomosphere</h3>
+            <p data-fr="Portail captif WiFi adossé à FreeRADIUS, dimensionné pour 10 000 sessions simultanées."
+               data-en="FreeRADIUS-backed captive WiFi portal, sized for 10,000 concurrent sessions."></p>
+          </div>
+        </div>
+
+        <div class="tl-row todo">
+          <div class="tl-when">20XX &ndash; 20XX</div>
+          <div class="tl-what">
+            <h3>Protelcol / Free</h3>
+            <p data-fr="Développement backend en environnement télécom."
+               data-en="Backend development in a telecom environment."></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STACK -->
+  <section class="block" id="stack">
+    <div class="wrap">
+      <div class="block-head">
+        <h2 data-fr="Ce que j'utilise" data-en="What I work with"></h2>
+        <p class="block-note"
+           data-fr="Pas une liste de logos. Ce sur quoi j'ai livré du code en production."
+           data-en="Not a logo wall. What I have actually shipped with."></p>
+      </div>
+
+      <table class="stack" data-reveal>
+        <thead>
+          <tr>
+            <th data-fr="Domaine" data-en="Area"></th>
+            <th data-fr="Outils" data-en="Tools"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td data-fr="Langage" data-en="Language"></td>
+            <td>PHP 8, Symfony 6 / 7, Doctrine, API Platform</td>
+          </tr>
+          <tr>
+            <td data-fr="Données" data-en="Data"></td>
+            <td data-fr="PostgreSQL, MySQL, Redis, indexation, lecture de plans d'exécution, traitement par lots"
+                data-en="PostgreSQL, MySQL, Redis, indexing, reading query plans, batch processing"></td>
+          </tr>
+          <tr>
+            <td data-fr="Asynchrone" data-en="Async"></td>
+            <td data-fr="RabbitMQ, Symfony Messenger, Mercure (SSE), files et retries"
+                data-en="RabbitMQ, Symfony Messenger, Mercure (SSE), queues and retries"></td>
+          </tr>
+          <tr>
+            <td data-fr="Qualité" data-en="Quality"></td>
+            <td data-fr="PHPUnit, PHPStan, GitHub Actions, une PR par sujet, CI verte avant merge"
+                data-en="PHPUnit, PHPStan, GitHub Actions, one PR per issue, green CI before merge"></td>
+          </tr>
+          <tr>
+            <td data-fr="Exploitation" data-en="Runtime"></td>
+            <td>Docker, Linux, Nginx, Varnish</td>
+          </tr>
+          <tr>
+            <td data-fr="En cours" data-en="Learning"></td>
+            <td data-fr='Go. Service d''ingestion de données capteurs, code ouvert sur <a href="https://github.com/rauzadaj/go-cultivatrace" target="_blank" rel="noreferrer noopener">GitHub</a>.'
+                data-en='Go. Sensor data ingestion service, source open on <a href="https://github.com/rauzadaj/go-cultivatrace" target="_blank" rel="noreferrer noopener">GitHub</a>.'></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- MODES -->
+  <section class="block" id="modes">
+    <div class="wrap">
+      <div class="block-head">
+        <h2 data-fr="Deux façons de travailler ensemble" data-en="Two ways to work together"></h2>
+        <p class="block-note"
+           data-fr="Les deux sont ouvertes. Dites-moi laquelle vous intéresse, je réponds sous 24 heures."
+           data-en="Both are open. Tell me which one applies and I answer within 24 hours."></p>
+      </div>
+
+      <div class="modes" data-reveal>
+        <div class="mode a">
+          <span class="label" data-fr="Option A" data-en="Option A"></span>
+          <h3 data-fr="En CDI, dans votre équipe" data-en="Permanent, inside your team"></h3>
           <ul>
-            <li>Backends Symfony scalables et APIs connectées à des plateformes internes.</li>
-            <li>Traitements asynchrones avec RabbitMQ pour industrialiser la charge.</li>
-            <li>Streaming temps réel avec Mercure pour le suivi des jobs longs.</li>
-            <li>Optimisation d'un pipeline d'import: -84% sur le temps de traitement.</li>
+            <li data-fr="Poste backend senior ou lead technique."
+                data-en="Senior backend or tech lead role."></li>
+            <li data-fr="France en télétravail, ou relocalisation à Montréal."
+                data-en="Remote from France, or relocation to Montreal."></li>
+            <li data-fr="Je prends la dette technique, la performance et la revue de code."
+                data-en="I take on technical debt, performance and code review."></li>
+            <li data-fr="Préavis à discuter, disponibilité rapide."
+                data-en="Notice period negotiable, quick availability."></li>
           </ul>
-        </article>
+        </div>
 
-        <article class="job">
-          <div class="job-top">
-            <div>
-              <h3>Backend Engineer — Izidore</h3>
-              <div class="where">Symfony · Vue.js · Algolia · Tests</div>
-            </div>
-            <div class="when">Juillet 2023 - Octobre 2023</div>
-          </div>
+        <div class="mode b">
+          <span class="label" data-fr="Option B" data-en="Option B"></span>
+          <h3 data-fr="En mission, sur un problème précis" data-en="Freelance, on a specific problem"></h3>
           <ul>
-            <li>Maintenance et amélioration continue des services backend.</li>
-            <li>Intégration Algolia pour recherche et indexation en temps réel.</li>
-            <li>Renforcement de la fiabilité avec tests unitaires et fonctionnels.</li>
+            <li data-fr="Audit de performance avec chiffres avant et après."
+                data-en="Performance audit with before and after numbers."></li>
+            <li data-fr="Reprise d'une application Symfony héritée."
+                data-en="Taking over an inherited Symfony application."></li>
+            <li data-fr="Renfort backend sur un sprint ou un chantier délimité."
+                data-en="Backend reinforcement on a sprint or a bounded project."></li>
+            <li data-fr="Micro-entreprise, TVA, régie ou forfait."
+                data-en="Registered business, VAT, time-based or fixed-price."></li>
           </ul>
-        </article>
-
-        <article class="job">
-          <div class="job-top">
-            <div>
-              <h3>Fullstack Engineer — Delta RM</h3>
-              <div class="where">SaaS · PostgreSQL · REST APIs · Docker</div>
-            </div>
-            <div class="when">Novembre 2021 - Juillet 2022</div>
-          </div>
-          <ul>
-            <li>Renfort sur un produit SaaS existant avec objectif de migration vers une nouvelle version de Symfony.</li>
-            <li>Refactor de logique legacy sortie des stored procedures.</li>
-            <li>Découplage via repositories pour maintenabilité et testabilité.</li>
-          </ul>
-        </article>
+        </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <section class="section" id="stack" data-reveal>
-      <h2>Stack de mission</h2>
-      <div class="stack-grid">
-        <article class="stack-card">
-          <h3>Backend Core</h3>
-          <p>Symfony, PHP, REST APIs, architecture orientée robustesse.</p>
-          <div class="tag-cloud">
-            <span class="tag">Symfony</span>
-            <span class="tag">PHP</span>
-            <span class="tag">REST</span>
-          </div>
-        </article>
-        <article class="stack-card">
-          <h3>Data et performance</h3>
-          <p>PostgreSQL, Redis, Varnish, indexing, tuning de requêtes, batch processing.</p>
-          <div class="tag-cloud">
-            <span class="tag">PostgreSQL</span>
-            <span class="tag">Redis</span>
-            <span class="tag">Varnish</span>
-          </div>
-        </article>
-        <article class="stack-card">
-          <h3>Delivery et production</h3>
-          <p>RabbitMQ, Mercure/SSE, Docker, CI/CD, Linux.</p>
-          <div class="tag-cloud">
-            <span class="tag">RabbitMQ</span>
-            <span class="tag">Mercure</span>
-            <span class="tag">Docker</span>
-            <span class="tag">CI/CD</span>
-          </div>
-        </article>
+  <!-- CONTACT -->
+  <section class="block" id="contact">
+    <div class="wrap">
+      <div class="block-head">
+        <h2 data-fr="Écrivez-moi" data-en="Get in touch"></h2>
+        <p class="block-note"
+           data-fr="Un mail avec le contexte suffit. Pas besoin de formulaire."
+           data-en="One email with the context is enough. No form needed."></p>
       </div>
-    </section>
 
-    <section class="section" id="contact" data-reveal>
-      <h2>Contact</h2>
-      <p class="section-intro">Si ton produit a besoin d'un backend fiable, rapide et proprement industrialisé, on peut parler mission.</p>
-      <div class="contact-grid">
-        <article class="contact-card">
-          <h3>Email direct</h3>
+      <div class="contact-grid" data-reveal>
+        <div>
+          <span class="label">Email</span>
           <p><a href="mailto:jonathan.rauzada@epitech.eu">jonathan.rauzada@epitech.eu</a></p>
-          <div class="tag-cloud"><span class="tag">Réponse rapide</span></div>
-        </article>
-        <article class="contact-card">
-          <h3>Profil public</h3>
-          <p><a href="https://linkedin.com/in/jonathan-rauzada" target="_blank" rel="noreferrer noopener">LinkedIn</a> · <a href="https://github.com/rauzadaj" target="_blank" rel="noreferrer noopener">GitHub</a></p>
-          <div class="tag-cloud"><span class="tag">Ouvert aux missions</span></div>
-        </article>
-        <article class="contact-card">
-          <h3>Zone</h3>
-          <p>Toulouse, France · Remote friendly</p>
-          <div class="tag-cloud"><span class="tag">FR</span><span class="tag">EN B2</span></div>
-        </article>
+        </div>
+        <div>
+          <span class="label" data-fr="Ailleurs" data-en="Elsewhere"></span>
+          <p>
+            <a href="https://linkedin.com/in/jonathan-rauzada" target="_blank" rel="noreferrer noopener">LinkedIn</a>
+            &nbsp;·&nbsp;
+            <a href="https://github.com/rauzadaj" target="_blank" rel="noreferrer noopener">GitHub</a>
+            &nbsp;·&nbsp;
+            <a href="cv-jonathan-rauzada.pdf" data-fr="CV (PDF)" data-en="Resume (PDF)"></a>
+          </p>
+        </div>
+        <div>
+          <span class="label" data-fr="Où" data-en="Where"></span>
+          <p data-fr="Toulouse, France. Télétravail. Ouvert à une installation à Montréal."
+             data-en="Toulouse, France. Remote. Open to relocating to Montreal."></p>
+        </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <footer class="footer">
+  <div class="wrap">
+    <footer>
       <span>© <span id="year"></span> Jonathan Rauzada</span>
-      <span>Backend Engineer · Symfony · APIs · Async · Performance</span>
+      <span data-fr="Symfony · PostgreSQL · RabbitMQ · Mercure · Docker"
+            data-en="Symfony · PostgreSQL · RabbitMQ · Mercure · Docker"></span>
     </footer>
-  </main>
+  </div>
 
-  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+</main>
 
-  <script>
-    (function () {
-      const root = document.documentElement;
-      const themeBtn = document.getElementById("themeBtn");
-      const copyEmailBtn = document.getElementById("copyEmailBtn");
-      const toast = document.getElementById("toast");
-      const email = "jonathan.rauzada@epitech.eu";
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-      document.getElementById("year").textContent = String(new Date().getFullYear());
+<script>
+(function () {
+  "use strict";
 
-      function showToast(message) {
-        toast.textContent = message;
-        toast.classList.add("show");
-        clearTimeout(showToast._t);
-        showToast._t = setTimeout(function () {
-          toast.classList.remove("show");
-        }, 1700);
-      }
+  var EMAIL = "jonathan.rauzada@epitech.eu";
+  var TITLES = {
+    fr: "Jonathan Rauzada, ingénieur backend Symfony",
+    en: "Jonathan Rauzada, Symfony backend engineer"
+  };
 
-      function getTheme() {
-        return localStorage.getItem("theme") || "dark";
-      }
+  document.getElementById("year").textContent = String(new Date().getFullYear());
 
-      function setTheme(theme) {
-        if (theme === "light") {
-          root.setAttribute("data-theme", "light");
-        } else {
-          root.removeAttribute("data-theme");
-        }
-        localStorage.setItem("theme", theme);
-      }
+  /* ----- langue ----- */
+  var langButtons = document.querySelectorAll(".lang button");
 
-      setTheme(getTheme());
+  function applyLang(lang) {
+    document.documentElement.lang = lang;
+    document.title = TITLES[lang];
 
-      themeBtn.addEventListener("click", function () {
-        const next = getTheme() === "dark" ? "light" : "dark";
-        setTheme(next);
-        showToast(next === "light" ? "Theme clair" : "Theme sombre");
-      });
+    document.querySelectorAll("[data-fr]").forEach(function (el) {
+      var value = el.getAttribute("data-" + lang);
+      if (value !== null) { el.innerHTML = value; }
+    });
 
-      async function copyToClipboard(text) {
-        try {
-          await navigator.clipboard.writeText(text);
-          return true;
-        } catch (_) {
-          const ta = document.createElement("textarea");
-          ta.value = text;
-          ta.style.position = "fixed";
-          ta.style.opacity = "0";
-          document.body.appendChild(ta);
-          ta.select();
-          let ok = false;
-          try {
-            ok = document.execCommand("copy");
-          } catch (_) {
-            ok = false;
-          }
-          document.body.removeChild(ta);
-          return ok;
-        }
-      }
+    document.querySelectorAll("[data-fr-label]").forEach(function (el) {
+      var value = el.getAttribute("data-" + lang + "-label");
+      if (value !== null) { el.setAttribute("aria-label", value); }
+    });
 
-      copyEmailBtn.addEventListener("click", async function () {
-        const ok = await copyToClipboard(email);
-        showToast(ok ? "Email copie" : "Copie impossible");
-      });
+    langButtons.forEach(function (btn) {
+      btn.setAttribute("aria-pressed", String(btn.dataset.lang === lang));
+    });
+  }
 
-      document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
-        anchor.addEventListener("click", function (event) {
-          const href = anchor.getAttribute("href");
-          if (!href || href.length < 2) return;
-          const target = document.querySelector(href);
-          if (!target) return;
-          event.preventDefault();
-          target.scrollIntoView({ behavior: "smooth", block: "start" });
-          history.replaceState(null, "", href);
-        });
-      });
+  langButtons.forEach(function (btn) {
+    btn.addEventListener("click", function () { applyLang(btn.dataset.lang); });
+  });
 
-      const observer = new IntersectionObserver(
-        function (entries) {
-          entries.forEach(function (entry) {
-            if (entry.isIntersecting) {
-              entry.target.classList.add("visible");
-              observer.unobserve(entry.target);
-            }
-          });
-        },
-        { threshold: 0.14 }
-      );
+  var initial = (navigator.language || "fr").toLowerCase().indexOf("fr") === 0 ? "fr" : "en";
+  applyLang(initial);
 
-      document.querySelectorAll("[data-reveal]").forEach(function (el) {
-        observer.observe(el);
-      });
-    })();
-  </script>
+  /* ----- copie email ----- */
+  var toast = document.getElementById("toast");
+  var toastTimer;
+
+  function say(message) {
+    toast.textContent = message;
+    toast.classList.add("on");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { toast.classList.remove("on"); }, 1800);
+  }
+
+  document.getElementById("copyEmail").addEventListener("click", function () {
+    var isFr = document.documentElement.lang === "fr";
+    var ok = isFr ? "Email copié" : "Email copied";
+    var ko = isFr ? "Copie impossible, sélectionnez l'adresse" : "Copy failed, select the address";
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(EMAIL).then(function () { say(ok); }, function () { say(ko); });
+      return;
+    }
+
+    var field = document.createElement("textarea");
+    field.value = EMAIL;
+    field.style.position = "fixed";
+    field.style.opacity = "0";
+    document.body.appendChild(field);
+    field.select();
+    var done = false;
+    try { done = document.execCommand("copy"); } catch (e) { done = false; }
+    document.body.removeChild(field);
+    say(done ? ok : ko);
+  });
+
+  /* ----- révélation au scroll + lancement de la trace ----- */
+  var observer = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (!entry.isIntersecting) { return; }
+      entry.target.classList.add("seen");
+      observer.unobserve(entry.target);
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll("[data-reveal]").forEach(function (el) { observer.observe(el); });
+
+  var traceBody = document.getElementById("traceBody");
+  var traceObserver = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (!entry.isIntersecting) { return; }
+      entry.target.classList.add("run");
+      traceObserver.unobserve(entry.target);
+    });
+  }, { threshold: 0.4 });
+  traceObserver.observe(traceBody);
+})();
+</script>
+
 </body>
 </html>
-
-
